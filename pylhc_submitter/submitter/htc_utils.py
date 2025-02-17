@@ -227,10 +227,10 @@ cd $SCRIPT_DIR
             # Additional commands for the mask/string
             f.write(cmds)
             f.write('"')
-            f.write("\n"
+            f.write("\n")
 
             # Manually copy output (if needed) ---
-            dest_dir = job.get(COLUMN_DEST_DIRECTORY) 
+            dest_dir = job.get(COLUMN_DEST_DIRECTORY)
             if output_dir and dest_dir and output_dir != dest_dir:
                 if iotools.is_eos_uri(dest_dir):
                     # Note: eos-cp needs `/` at the end of both, source and target, dirs...
