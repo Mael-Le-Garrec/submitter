@@ -206,6 +206,10 @@ def write_bash(
             # Preparation ---
             if not on_windows():
                 f.write(f"{SHEBANG}\n")
+
+            f.write("""SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+cd $SCRIPT_DIR
+""")
    
             if output_dir is not None:
                 f.write(f"mkdir {str(output_dir)}\n")
@@ -222,7 +226,8 @@ def write_bash(
 
             # Additional commands for the mask/string
             f.write(cmds)
-            f.write("\n")
+            f.write('"')
+            f.write("\n"
 
             # Manually copy output (if needed) ---
             dest_dir = job.get(COLUMN_DEST_DIRECTORY) 
@@ -235,6 +240,9 @@ def write_bash(
                     cp_command =  f'cp -r {output_dir} {_str_ending_with_slash(dest_dir)}'  
                     
                 f.write(f'{cp_command}\n')
+
+            f.close()
+            status = _start_subprocess(["chmod", "+x", f"{jobfile}"])
 
         shell_scripts[idx] = bash_file_name
 
